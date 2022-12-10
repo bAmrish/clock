@@ -1,9 +1,16 @@
 import {SVG} from '@svgdotjs/svg.js'
 
 const init = () => {
+
+  let MIN_DIM = Math.min(window.innerWidth, window.innerHeight);
+  MIN_DIM = Math.max(MIN_DIM, 300);
+
+  // account for 30px margin in main.css
+  MIN_DIM -= 60;
+
   const type = 'CLOCK';
-  const CANVAS_WIDTH = 400;
-  const CANVAS_HEIGHT = 400;
+  const CANVAS_WIDTH = MIN_DIM;
+  const CANVAS_HEIGHT = MIN_DIM;
   const CLOCK_MARGIN = 50;
   const CENTER_X = CANVAS_WIDTH / 2;
   const CENTER_Y = CANVAS_WIDTH / 2;
@@ -53,9 +60,7 @@ const init = () => {
     leading: '1.5em'
   };
 
-
-  const draw = SVG().addTo('body').size(CANVAS_WIDTH, CANVAS_HEIGHT).id("canvas");
-
+  window.draw = SVG().addTo('body').size(MIN_DIM, MIN_DIM).id("canvas");
   draw.rect(CANVAS_WIDTH, CANVAS_WIDTH).fill('none').stroke('none')
 
   const clockFace = draw.circle(CLOCK_DIAMETER + 20)
