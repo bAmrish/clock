@@ -1,7 +1,7 @@
 import {SVG} from '@svgdotjs/svg.js'
 
 const init = () => {
-  const type = 'TEST';
+  const type = 'CLOCK';
   const CANVAS_WIDTH = 400;
   const CANVAS_HEIGHT = 400;
   const CLOCK_MARGIN = 50;
@@ -11,10 +11,10 @@ const init = () => {
   const CLOCK_RADIUS = CLOCK_DIAMETER / 2;
   const HAND_MARGIN = 35;
 
-  const CLOCK_FACE_FILL_COLOR = "#FFFFFF11";
+  const CLOCK_FACE_FILL_COLOR = "rgba(185,185,185,00)";
   const CLOCK_FACE_STROKE_COLOR = "#493119";
   const CLOCK_FACE_STROKE_WIDTH = 0;
-  const CLOCK_FACE_SHADOW_COLOR = "#00000000"
+  const CLOCK_FACE_SHADOW_COLOR = "#817e7e"
   const CLOCK_FACE_SHADOW = `drop-shadow(3px 3px 3px ${CLOCK_FACE_SHADOW_COLOR})`;
 
   const CLOCK_CENTER_SIZE = 20;
@@ -44,7 +44,7 @@ const init = () => {
   const TICK_LENGTH = 10;
 
   const NUMBER_FONT_NAME = 'Helvetica';
-  const NUMBER_FONT_SiZE = 15;
+  const NUMBER_FONT_SiZE = 17;
 
   const NUMBER_FONT = {
     family: NUMBER_FONT_NAME,
@@ -133,19 +133,26 @@ const init = () => {
     hourHand.rotate(((360 * hour) / 12) + ((360 * min) / (12 * 60)), CENTER_X, CENTER_Y)
     secondHand.stroke({width: 0})
   } else {
-    const now = new Date();
-    const min = now.getMinutes();
-    const hour = now.getHours();
-    const sec = now.getSeconds();
-    console.log(`${hour}:${min}:${sec}`)
-    secondHand.rotate((360 * sec) / 60, CENTER_X, CENTER_Y)
-    minuteHand.rotate((360 * min) / 60, CENTER_X, CENTER_Y)
-    hourHand.rotate(((360 * hour) / 12) + ((360 * min) / (12 * 60)), CENTER_X, CENTER_Y)
+
+    let prevSecDeg =0;
+    let prevMinDeg =0;
+    let prevHourDeg =0;
 
     setInterval(() => {
-      secondHand.rotate((360 / 60), CENTER_X, CENTER_Y);
-      minuteHand.rotate((360 / (60 * 360)), CENTER_X, CENTER_Y);
-      hourHand.rotate((360 / (60 * 360 * 360)), CENTER_X, CENTER_Y);
+      const now = new Date();
+      const min = now.getMinutes();
+      const hour = now.getHours();
+      const sec = now.getSeconds();
+      secondHand.rotate(-1 * prevSecDeg, CENTER_X, CENTER_Y)
+      minuteHand.rotate(-1 * prevMinDeg, CENTER_X, CENTER_Y)
+      hourHand.rotate(-1 * prevHourDeg, CENTER_X, CENTER_Y)
+      prevSecDeg = (360 * sec) / 60;
+      prevMinDeg = (360 * min) / 60;
+      prevHourDeg = ((360 * hour) / 12) + ((360 * min) / (12 * 60));
+      secondHand.rotate(prevSecDeg, CENTER_X, CENTER_Y)
+      minuteHand.rotate(prevMinDeg, CENTER_X, CENTER_Y)
+      hourHand.rotate(prevHourDeg, CENTER_X, CENTER_Y)
+
     }, 1000)
   }
 };
