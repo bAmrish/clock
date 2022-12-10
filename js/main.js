@@ -1,6 +1,7 @@
 import {SVG} from '@svgdotjs/svg.js'
 
 const init = () => {
+  const type = 'TEST';
   const CANVAS_WIDTH = 400;
   const CANVAS_HEIGHT = 400;
   const CLOCK_MARGIN = 50;
@@ -10,10 +11,10 @@ const init = () => {
   const CLOCK_RADIUS = CLOCK_DIAMETER / 2;
   const HAND_MARGIN = 35;
 
-  const CLOCK_FACE_FILL_COLOR = "#70FF8700";
+  const CLOCK_FACE_FILL_COLOR = "#FFFFFF11";
   const CLOCK_FACE_STROKE_COLOR = "#493119";
-  const CLOCK_FACE_STROKE_WIDTH = 1;
-  const CLOCK_FACE_SHADOW_COLOR = "#3C2003FF"
+  const CLOCK_FACE_STROKE_WIDTH = 0;
+  const CLOCK_FACE_SHADOW_COLOR = "#00000000"
   const CLOCK_FACE_SHADOW = `drop-shadow(3px 3px 3px ${CLOCK_FACE_SHADOW_COLOR})`;
 
   const CLOCK_CENTER_SIZE = 20;
@@ -33,12 +34,17 @@ const init = () => {
   const HOUR_HAND_SHADOW_COLOR = "#3C2003FF"
   const HOUR_HAND_SHADOW = `drop-shadow(3px 3px 3px ${HOUR_HAND_SHADOW_COLOR})`;
 
+  const SECOND_HAND_STROKE_COLOR = "#690000";
+  const SECOND_HAND_STROKE_WIDTH = 1;
+  const SECOND_HAND_SHADOW_COLOR = "#3C2003FF"
+  const SECOND_HAND_SHADOW = `drop-shadow(3px 3px 3px ${SECOND_HAND_SHADOW_COLOR})`;
+
   const TICK_STROKE_COLOR = "#000000";
-  const TICK_STROKE_WIDTH = 0;
+  const TICK_STROKE_WIDTH = 1;
   const TICK_LENGTH = 10;
 
   const NUMBER_FONT_NAME = 'Helvetica';
-  const NUMBER_FONT_SiZE = 20;
+  const NUMBER_FONT_SiZE = 15;
 
   const NUMBER_FONT = {
     family: NUMBER_FONT_NAME,
@@ -54,7 +60,7 @@ const init = () => {
 
   const clockFace = draw.circle(CLOCK_DIAMETER + 20)
     .center(CENTER_X, CENTER_Y)
-    .dy(-3)
+    .dy(0)
     .stroke({color: CLOCK_FACE_STROKE_COLOR, width: CLOCK_FACE_STROKE_WIDTH})
     .fill(CLOCK_FACE_FILL_COLOR)
     .css({"filter": CLOCK_FACE_SHADOW});
@@ -64,7 +70,6 @@ const init = () => {
     .fill(CLOCK_CENTER_FILL_COLOR)
     .stroke({"color": CLOCK_CENTER_STROKE_COLOR, width: CLOCK_CENTER_STROKE_WIDTH})
     .css({"filter": CLOCK_CENTER_SHADOW});
-
 
   const minuteHand = draw.line(CENTER_X, CENTER_Y, CENTER_X, CLOCK_MARGIN + HAND_MARGIN)
     .stroke({
@@ -80,16 +85,27 @@ const init = () => {
     })
     .css({"filter": HOUR_HAND_SHADOW});
 
+  const secondHand = draw.line(CENTER_X, CENTER_Y, CENTER_X, CLOCK_MARGIN + HAND_MARGIN / 2)
+    .stroke({
+      width: SECOND_HAND_STROKE_WIDTH,
+      color: SECOND_HAND_STROKE_COLOR
+    })
+    .css({"filter": SECOND_HAND_SHADOW});
 
   for (let i = 1; i <= 60; i++) {
     let tickLength = TICK_LENGTH;
-    if (i % 5 === 0) tickLength = 5;
+    let strokeWidth = TICK_STROKE_WIDTH;
+
+    if (i % 5 === 0){
+      tickLength = NUMBER_FONT_SiZE === 0 ?  TICK_LENGTH * 2 : TICK_LENGTH / 2;
+      strokeWidth =+ 2;
+    }
 
     const angleInDeg = (360 / 60) * i;
     const angleInRad = ((angleInDeg) * Math.PI) / 180;
 
     draw.line(CENTER_X, CENTER_Y, CENTER_Y, CENTER_Y - tickLength)
-      .stroke({width: TICK_STROKE_WIDTH, color: TICK_STROKE_COLOR})
+      .stroke({width: strokeWidth, color: TICK_STROKE_COLOR})
       .rotate(angleInDeg)
       .dy(-1 * (CLOCK_RADIUS - (tickLength / 2) * Math.cos(angleInRad)))
       .dx((tickLength / 2) * (Math.sin(angleInRad)));
@@ -108,13 +124,30 @@ const init = () => {
       .rotate(-angleInDeg);
   }
 
-  const min = Math.floor(Math.random() * 12) * 5;
-  const hour = 1 + Math.floor(Math.random() * 12 - 1);
 
-  console.log(`${hour}:${min}`)
-  minuteHand.rotate((360 * min) / 60, CENTER_X, CENTER_Y)
-  hourHand.rotate(((360 * hour) / 12) + ((360 * min) / (12 * 60)), CENTER_X, CENTER_Y)
+  if (type === 'TEST') {
+    const min = Math.floor(Math.random() * 12) * 5;
+    const hour = 1 + Math.floor(Math.random() * 12 - 1);
+    console.log(`${hour}:${min}`)
+    minuteHand.rotate((360 * min) / 60, CENTER_X, CENTER_Y)
+    hourHand.rotate(((360 * hour) / 12) + ((360 * min) / (12 * 60)), CENTER_X, CENTER_Y)
+    secondHand.stroke({width: 0})
+  } else {
+    const now = new Date();
+    const min = now.getMinutes();
+    const hour = now.getHours();
+    const sec = now.getSeconds();
+    console.log(`${hour}:${min}:${sec}`)
+    secondHand.rotate((360 * sec) / 60, CENTER_X, CENTER_Y)
+    minuteHand.rotate((360 * min) / 60, CENTER_X, CENTER_Y)
+    hourHand.rotate(((360 * hour) / 12) + ((360 * min) / (12 * 60)), CENTER_X, CENTER_Y)
 
+    setInterval(() => {
+      secondHand.rotate((360 / 60), CENTER_X, CENTER_Y);
+      minuteHand.rotate((360 / (60 * 360)), CENTER_X, CENTER_Y);
+      hourHand.rotate((360 / (60 * 360 * 360)), CENTER_X, CENTER_Y);
+    }, 1000)
+  }
 };
 
 window.addEventListener('DOMContentLoaded', () => {
