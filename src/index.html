@@ -1,0 +1,71 @@
+<!doctype html>
+<html class="h-full no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>The Clock</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="The Clock App">
+  <meta property="og:description" content="A simple clock app that help also help you learn analog clock by practicing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://the-clock-app.web.app">
+  <meta property="og:image" content="https://the-clock-app.web.app/img/app-image.png">
+  <meta property="og:locale" content="en_US" />
+
+  <link rel="manifest" href="../site.webmanifest">
+  <link rel="apple-touch-icon" href="../icon.png">
+
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
+
+  <link rel="stylesheet" href="css/index.css">
+
+  <meta name="theme-color" content="#fafafa">
+
+
+</head>
+
+<body class="mx-auto h-full font-body">
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <!--  <script src="src/js/firebase.ts"></script>-->
+  <script src="js/main.ts" type="module"></script>
+  <div id="container" class="h-full flex flex-col ">
+    <div id="header" class="border-b-2 border-gray-300 flex flex-row items-center justify-between p-4">
+      <div id="heading" class="text-3xl">The Clock</div>
+
+      <div id="toolbar" class="relative">
+        <div class="material-symbols-outlined cursor-pointer sm:hidden" id="menu">
+          menu
+        </div>
+        <div id="toolbar-items" class="
+                  hidden flex flex-col gap-1
+                  absolute top-6 right-0
+                  bg-white border-2 border-gray-200
+                  rounded shadow-lg
+                  sm:flex
+                  sm:relative sm:flex-row sm:gap-5
+                  sm:top-auto sm:left-auto sm:border-none sm:shadow-none">
+          <div class="w-32 sm:w-auto flex gap-2 justify-start items-center m-2 sm:m-auto">
+            <input type="radio" id="clock-type-current-time" name="clock-type" value="current-time" checked
+                   class="cursor-pointer"/>
+            <label class="cursor-pointer grow" for="clock-type-current-time">Current Time</label>
+          </div>
+          <div class="w-32 sm:w-auto flex gap-2 justify-start items-center m-2 sm:m-auto">
+            <input type="radio" id="clock-type-learn" name="clock-type" value="learn"  class="cursor-pointer"/>
+            <label class="cursor-pointer grow" for="clock-type-learn">Test</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="clock" class="grow flex justify-center"></div>
+    <div id="footer" class="">
+    </div>
+  </div>
+
+</body>
+
+</html>
