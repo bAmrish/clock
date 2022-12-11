@@ -5,8 +5,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const c: Clock = new Clock();
 
-  const type = 'TEST';
+  const type = 'CLOCK';
 
+  // @ts-ignore
   if (type === 'TEST') {
     const min = Math.floor(Math.random() * 12) * 5;
     const hour = 1 + Math.floor(Math.random() * 12 - 1);

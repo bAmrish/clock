@@ -133,6 +133,12 @@ class Numbers {
     this.cy = this.canvas.height / 2;
     const diameter = this.canvas.width - 50 * 2;
     this.radius = diameter/2;
+    console.log(this.canvas.width);
+    if(this.canvas.width < 450) {
+      this.NUMBER_OFFSET = 15
+      this.NUMBER_FONT_SiZE = 15;
+      this.NUMBER_FONT.size = this.NUMBER_FONT_SiZE;
+    }
   }
 
   draw(): this {
@@ -230,6 +236,9 @@ class ClockHands {
     this.svg = svg;
     this.cx = this.canvas.width / 2;
     this.cy = this.canvas.height / 2;
+    if (this.canvas.width < 450) {
+      this.handMargin = 25;
+    }
   }
 
   draw(): this {
@@ -297,7 +306,7 @@ export class Clock {
 
   draw() {
     let MIN_DIM = Math.min(window.innerWidth, window.innerHeight);
-    MIN_DIM = Math.max(MIN_DIM, 300);
+    MIN_DIM = Math.max(MIN_DIM, 400);
 
     // account for 30px margin in main.css
     MIN_DIM -= 60;
