@@ -73,13 +73,13 @@ class Ticks {
     this.svg = svg;
     this.cx = this.canvas.width / 2;
     this.cy = this.canvas.height / 2;
-    this.radius = ( this.canvas.width - 50 * 2) / 2;
+    this.radius = (this.canvas.width - 50 * 2) / 2;
   }
 
 
   setNumberTicksSize(size: 'SMALL' | 'LARGE') {
-      this.numberTicksSize = size;
-      this.draw();
+    this.numberTicksSize = size;
+    this.draw();
   }
 
   draw(): this {
@@ -132,9 +132,9 @@ class Numbers {
     this.cx = this.canvas.width / 2;
     this.cy = this.canvas.height / 2;
     const diameter = this.canvas.width - 50 * 2;
-    this.radius = diameter/2;
+    this.radius = diameter / 2;
     console.log(this.canvas.width);
-    if(this.canvas.width < 450) {
+    if (this.canvas.width < 450) {
       this.NUMBER_OFFSET = 15
       this.NUMBER_FONT_SiZE = 15;
       this.NUMBER_FONT.size = this.NUMBER_FONT_SiZE;
@@ -158,8 +158,8 @@ class Numbers {
   }
 
   show(): this {
-        this.numbers.forEach(number => number.show());
-        return this;
+    this.numbers.forEach(number => number.show());
+    return this;
   }
 
   hide(): this {
@@ -267,7 +267,7 @@ class ClockHands {
     return this;
   }
 
-  showSeconds (show: boolean): this {
+  showSeconds(show: boolean): this {
     show ? this.secondHand.show() : this.secondHand.hide();
     return this;
   }
@@ -291,6 +291,7 @@ class ClockHands {
 }
 
 export class Clock {
+  parentNode: HTMLElement;
   svg: Svg;
   canvas: Canvas;
   clockFace: ClockFace;
@@ -300,18 +301,21 @@ export class Clock {
   numbers: Numbers;
   ticker: number;
 
-  constructor() {
+  constructor(parentNode: HTMLElement) {
+    this.parentNode = parentNode;
     this.draw();
   }
 
   draw() {
-    let MIN_DIM = Math.min(window.innerWidth, window.innerHeight);
+    const parentWidth = parseInt(getComputedStyle(this.parentNode).width);
+    const parentHeight = parseInt(getComputedStyle(this.parentNode).height);
+    let MIN_DIM = Math.min(parentWidth, parentHeight);
     MIN_DIM = Math.max(MIN_DIM, 400);
 
     // account for 30px margin in main.css
     MIN_DIM -= 60;
 
-    let svg = this.svg = SVG().addTo('body').size(MIN_DIM, MIN_DIM).id("canvas");
+    let svg = this.svg = SVG().addTo(this.parentNode).size(MIN_DIM, MIN_DIM).id("canvas");
     this.canvas = new Canvas(svg, MIN_DIM, MIN_DIM).draw();
     this.clockFace = new ClockFace(this.canvas, svg).draw();
     this.clockCenter = new ClockCenter(this.canvas, this.svg).draw();
@@ -321,22 +325,27 @@ export class Clock {
     this.currentTime();
   }
 
-  showNumbers():this {
+  showNumbers(): this {
     this.numbers.show();
     this.ticks.setNumberTicksSize("LARGE")
     return this;
   }
 
-  hideNumbers():this {
+  hideNumbers(): this {
     this.numbers.hide();
     this.ticks.setNumberTicksSize("SMALL")
     return this;
   }
 
-  currentTime():this {
-    if(this.ticker) {
+  currentTime(): this {
+    this.showSeconds();
+    if (this.ticker) {
       clearInterval(this.ticker);
     }
+    const now = new Date();
+    this.clockHands.setTime(now.getHours(), now.getMinutes(), now.getSeconds());
+
+    // @ts-ignore
     this.ticker = setInterval(() => {
       const now = new Date();
       this.clockHands.setTime(now.getHours(), now.getMinutes(), now.getSeconds());
@@ -344,8 +353,8 @@ export class Clock {
     return this;
   }
 
-  showTime(hour = 0, min = 0, sec = 0): this{
-    if(this.ticker) {
+  showTime(hour = 0, min = 0, sec = 0): this {
+    if (this.ticker) {
       clearInterval(this.ticker);
     }
 
@@ -355,8 +364,9 @@ export class Clock {
 
   showSeconds(): this {
     this.clockHands.showSeconds(true);
-    return  this;
+    return this;
   }
+
   hideSeconds(): this {
     this.clockHands.showSeconds(false);
     return this;
