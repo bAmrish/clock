@@ -93,6 +93,9 @@ export class Game {
     this.clearResults();
     this.answerHourNode.value = "0";
     this.answerMinuteNode.value = "0";
+    this.answerHourNode.removeAttribute('disabled');
+    this.answerMinuteNode.removeAttribute('disabled');
+
   }
 
   checkAnswer() {
@@ -107,8 +110,8 @@ export class Game {
 
     const messages = [];
 
-    this.answerHourNode.disabled;
-    this.answerMinuteNode.disabled;
+    this.answerHourNode.setAttribute('disabled', 'true');
+    this.answerMinuteNode.setAttribute('disabled', 'true');
 
     this.question.answer.hour = hour;
     this.question.answer.min = min;
