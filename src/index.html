@@ -8,11 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta property="og:title" content="The Clock App">
-  <meta property="og:description" content="A simple clock app that help also help you learn analog clock by practicing.">
+  <meta property="og:description"
+        content="A simple clock app that help also help you learn analog clock by practicing.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://the-clock-app.web.app">
   <meta property="og:image" content="https://the-clock-app.web.app/img/app-image.png">
-  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale" content="en_US"/>
 
   <link rel="manifest" href="../site.webmanifest">
   <link rel="apple-touch-icon" href="../icon.png">
@@ -49,19 +50,42 @@
                   sm:relative sm:flex-row sm:gap-5
                   sm:top-auto sm:left-auto sm:border-none sm:shadow-none">
           <div class="w-32 sm:w-auto flex gap-2 justify-start items-center m-2 sm:m-auto">
-            <input type="radio" id="clock-type-current-time" name="clock-type" value="current-time" checked
+            <input type="radio" id="clock-type-current-time" name="clock-type" value="current-time"
                    class="cursor-pointer"/>
             <label class="cursor-pointer grow" for="clock-type-current-time">Current Time</label>
           </div>
           <div class="w-32 sm:w-auto flex gap-2 justify-start items-center m-2 sm:m-auto">
-            <input type="radio" id="clock-type-learn" name="clock-type" value="learn"  class="cursor-pointer"/>
-            <label class="cursor-pointer grow" for="clock-type-learn">Test</label>
+            <input type="radio" id="clock-type-learn" name="clock-type" value="learn" checked class="cursor-pointer"/>
+            <label class="cursor-pointer grow" for="clock-type-learn">Learn</label>
           </div>
         </div>
       </div>
     </div>
 
-    <div id="clock" class="grow flex justify-center"></div>
+    <div id="clock-container" class="flex flex-col grow">
+      <div id="clock" class="flex justify-center sm:grow"></div>
+      <div id="game">
+        <div id="answer-container" class="flex flex-col justify-center">
+          <div id="answers" class="flex gap-5 justify-center">
+            <div class="flex gap-5 items-center">
+              <label for="hour-answer" class="w-12">Hour</label>
+              <input id="hour-answer" name="hour" type="number" class="border-2 border-gray rounded p-2 w-24"/>
+            </div>
+            <div class="flex gap-5 items-center">
+              <label for="minute-answer" class="w-12">Minute</label>
+              <input id="minute-answer" name="minute" type="number" class="border-2 border-gray rounded p-2 w-24"/>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <button id="submit-answer" class="btn btn-blue mt-2">OK</button>
+            <button id="new-question" class="hidden btn btn-blue mt-2">New Question</button>
+          </div>
+          <div id="results" class="hidden text-lg text-center flex flex-col m-5 p-2 border-2 invalid rounded-2xl">
+          </div>
+        </div>
+
+      </div>
+    </div>
     <div id="footer" class="">
     </div>
   </div>
