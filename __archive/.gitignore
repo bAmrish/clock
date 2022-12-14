@@ -4,8 +4,8 @@
 node_modules/
 dist/
 .cache/
-.idea/
-
+../.idea/
+__archive/
 .firebase/
 .parcel-cache/
 
